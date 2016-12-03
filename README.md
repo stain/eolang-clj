@@ -1,36 +1,26 @@
 # eolang
 
-FIXME: description
+This is an **experimental** attempt to map the
+experimental [EO](https://github.com/yegor256/eo) programming
+language to [Clojure](http://clojure.org/), using LISP forms
+as a kind of abstract syntax tree.  
 
-## Installation
+This is **not** meant as a compiler of EO.
 
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar eolang-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+Note: This code **could change at any point** - or (perhaps more likely)
+not at all.
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 Stian Soiland-Reyes [orcid.org/0000-0001-9842-9718](http://orcid.org/0000-0001-9842-9718/)
+Copyright © 2016 [University of Manchester](http://www.esciencelab.org.uk/)
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the
+[Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html)
+either version 1.0 or (at your option) any later version.
+See the file `LICENSE` for details.
+
+The `test/` includes examples adapted from https://github.com/yegor256/eo
+which are © 2016 Yegor Bugayenko and
+[contributors](https://github.com/yegor256/eo/graphs/contributors).
+`TODO`: [Clarify open source license of the eo spec](https://github.com/yegor256/eo/issues/64).
