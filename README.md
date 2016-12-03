@@ -15,12 +15,10 @@ not at all.
 Copyright © 2016 Stian Soiland-Reyes [orcid.org/0000-0001-9842-9718](http://orcid.org/0000-0001-9842-9718/)
 Copyright © 2016 [University of Manchester](http://www.esciencelab.org.uk/)
 
-Distributed under the
-[Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html)
-either version 1.0 or (at your option) any later version.
-See the file `LICENSE` for details.
+Distributed under the [MIT license](https://opensource.org/licenses/MIT)
+See the file [LICENSE](LICENSE) for details.
 
-The `test/` includes examples adapted from https://github.com/yegor256/eo
+The `test/` folder includes examples adapted from https://github.com/yegor256/eo
 which are © 2016 Yegor Bugayenko and
 [contributors](https://github.com/yegor256/eo/graphs/contributors).
 `TODO`: [Clarify open source license of the eo spec](https://github.com/yegor256/eo/issues/64).
