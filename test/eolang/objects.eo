@@ -1,0 +1,11 @@
+object alphabet("978-1-51916-691-3", "The Alphabet") as Book:
+  String @isbn
+  String @title
+  ctor(String i, String t):
+    @isbn = i
+    @title = t
+  String asText():
+    sprintf:
+      "ISBN is %s, title is '%s'",
+      @isbn,
+      @title

@@ -1,0 +1,7 @@
+import org.eolang.cli
+import org.eolang.printed
+import org.eolang.string
+cli:
+  printed:
+    string:
+      "Hello, world!"

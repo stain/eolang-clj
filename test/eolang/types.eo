@@ -1,0 +1,9 @@
+type Book:
+  String asText()
+type Car:
+  Money cost()
+  Bytes picture()
+  Car moveTo(Coordinates coords)
+type Pixel extends Point:
+  Pixel moveTo(Int x, Int y)
+  Bytes drawTo(Canvas canvas)
