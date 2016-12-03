@@ -1,4 +1,5 @@
 (ns eolang.core
+  (:require [eolang.parser])
   (:gen-class))
 
 (defn -main

@@ -10,11 +10,19 @@ This is **not** meant as a compiler of EO.
 Note: This code **could change at any point** - or (perhaps more likely)
 not at all.
 
-## Build
+## Building and running
 
-Build using [Leiningen](http://leiningen.org/) and Java/OpenJDK 8 or later:
+You need [Leiningen](http://leiningen.org/) and Java/OpenJDK 8 or later.
 
-    lein install
+While developing you can run directly using:
+
+    lein run
+
+To build an executable JAR:
+
+    lein uberjar
+    java -jar target/uberjar/eolang-0.0.1-SNAPSHOT-standalone.jar
+
 
 ## License
 
