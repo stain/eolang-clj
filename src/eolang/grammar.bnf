@@ -46,11 +46,11 @@ imports = (import <WHITESPACE>)*
 extends = <EXTENDS> <WHITESPACE> TYPENAME (<COMMA> <WHITESPACE>? TYPENAME)*
 
 paramlist = TYPENAME <WHITESPACE> OBJECTNAME (<COMMA> TYPENAME <WHITESPACE> OBJECTNAME)*
-params = <LEFT_BRACKET> <WHITESPACE> paramlist? <WHITESPACE> <RIGHT_BRACKET>
+params = <LEFT_BRACKET> <WHITESPACE>? paramlist? <WHITESPACE>? <RIGHT_BRACKET>
 method = TYPENAME <WHITESPACE> METHODNAME params
 methods = (method <WHITESPACE>)*
 
-type = TYPE <WHITESPACE> TYPENAME <WHITESPACE> extends? <COLON> <WHITESPACE> methods
+type = TYPE <WHITESPACE> TYPENAME (<WHITESPACE> extends)? <COLON> <WHITESPACE>? methods
 types = (type <WHITESPACE>)*
 
 number = INT | FLOAT
@@ -65,7 +65,8 @@ attribs = (attrib <WHITESPACE>)*
 
 methodimpl = method (<COLON> call)?
 methodimpls = (methodimpl <WHITESPACE>)*
-objectdecl = OBJECT <WHITESPACE> <AS> <WHITESPACE> typenames <COLON> attribs methodimpls
+objectcall = OBJECTNAME (<LEFT_BRACKET> args <RIGHT_BRACKET>)?
+objectdecl = <OBJECT> <WHITESPACE> objectcall <WHITESPACE> (<AS> <WHITESPACE> typenames <WHITESPACE>)? <COLON> attribs methodimpls
 
 object = objectcopy | objectdecl
 objects = (object <WHITESPACE>)*
