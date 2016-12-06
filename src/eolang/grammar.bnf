@@ -48,10 +48,10 @@ extends = <EXTENDS> <WHITESPACE> TYPENAME (<COMMA> <WHITESPACE>? TYPENAME)*
 paramlist = TYPENAME <WHITESPACE> OBJECTNAME (<COMMA> TYPENAME <WHITESPACE> OBJECTNAME)*
 params = <LEFT_BRACKET> <WHITESPACE>? paramlist? <WHITESPACE>? <RIGHT_BRACKET>
 method = TYPENAME <WHITESPACE> METHODNAME params
-methods = (method <WHITESPACE>)*
+methods = (method (<WHITESPACE> method)* )?
 
 type = TYPE <WHITESPACE> TYPENAME (<WHITESPACE> extends)? <COLON> <WHITESPACE>? methods
-types = (type <WHITESPACE>)*
+types = (type (<WHITESPACE> type)*)?
 
 number = INT | FLOAT
 call = obj <DOT> METHODNAME <LEFT_BRACKET> args? <RIGHT_BRACKET>
