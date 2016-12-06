@@ -3,7 +3,14 @@ Must be compatible with https://github.com/engelberg/instaparse
 
 See also eo-compiler's grammar
 https://github.com/yegor256/eo/blob/master/eo-compiler/src/main/antlr4/org/eolang/compiler/Program.g4
+
+First rule MUST be 'program' as that is the default
+
 *)
+
+
+
+program = imports types objects WHITESPACE?
 
 
 WHITESPACE = #"\s+"
@@ -27,40 +34,38 @@ COLON = ':'
 DOT = '.'
 LEFT_BRACKET = '('
 RIGHT_BRACKET = ')'
-STRING = '"' #".FIXME" '""'
+STRING = <'"'> #"(\\\"|[^\"])*" <'"'>
 INT = #"-?[1-9]*[0-9]"
 (* TODO: Full IEEE FP spec including 10.32e-15 and -inf? *)
 FLOAT = #"-?[0-9]*(\\.[0-9]+)"
 
 
-import = IMPORT WHITESPACE JVMTYPE
-imports = (import WHITESPACE)*
+import = <IMPORT> <WHITESPACE> JVMTYPE
+imports = (import <WHITESPACE>)*
 
-extends = EXTENDS WHITESPACE TYPENAME (COMMA WHITESPACE? TYPENAME)*
+extends = <EXTENDS> <WHITESPACE> TYPENAME (<COMMA> <WHITESPACE>? TYPENAME)*
 
-paramlist = ( TYPENAME WHITESPACE OBJECTNAME (COMMA paramlist)? )
-params = LEFT_BRACKET WHITESPACE paramlist? WHITESPACE RIGHT_BRACKET
-method = TYPENAME WHITESPACE METHODNAME params
-methods = (method WHITESPACE)*
+paramlist = TYPENAME <WHITESPACE> OBJECTNAME (<COMMA> TYPENAME <WHITESPACE> OBJECTNAME)*
+params = <LEFT_BRACKET> <WHITESPACE> paramlist? <WHITESPACE> <RIGHT_BRACKET>
+method = TYPENAME <WHITESPACE> METHODNAME params
+methods = (method <WHITESPACE>)*
 
-type = TYPE WHITESPACE TYPENAME WHITESPACE extends? COLON WHITESPACE methods
-types = (type WHITESPACE)*
+type = TYPE <WHITESPACE> TYPENAME <WHITESPACE> extends? <COLON> <WHITESPACE> methods
+types = (type <WHITESPACE>)*
 
 number = INT | FLOAT
-call = obj DOT METHODNAME LEFT_BRACKET args? RIGHT_BRACKET
+call = obj <DOT> METHODNAME <LEFT_BRACKET> args? <RIGHT_BRACKET>
 obj = ATTRIBUTENAME | OBJECTNAME | object | call
 arg = STRING | number | obj
-args = arg WHITESPACE? (COMMA WHITESPACE? arg)*
-objectcopy = OBJECTNAME COLON WHITESPACE? args?
-typenames = TYPENAME WHITESPACE? (COMMA WHITESPACE TYPENAME)*
-attrib = TYPENAME WHITESPACE ATTRIBUTENAME
-attribs = (attrib WHITESPACE)*
+args = arg WHITESPACE? (<COMMA> <WHITESPACE>? arg)*
+objectcopy = OBJECTNAME <COLON> <WHITESPACE>? args?
+typenames = TYPENAME <WHITESPACE>? (<COMMA> <WHITESPACE> TYPENAME)*
+attrib = TYPENAME <WHITESPACE> ATTRIBUTENAME
+attribs = (attrib <WHITESPACE>)*
 
-methodimpl = method (COLON call)?
-methodimpls = (methodimpl WHITESPACE)*
-objectdecl = OBJECT WHITESPACE AS WHITESPACE typenames COLON attribs methodimpls
+methodimpl = method (<COLON> call)?
+methodimpls = (methodimpl <WHITESPACE>)*
+objectdecl = OBJECT <WHITESPACE> <AS> <WHITESPACE> typenames <COLON> attribs methodimpls
 
 object = objectcopy | objectdecl
-objects = (object WHITESPACE)*
-
-program = WHITESPACE? imports types objects WHITESPACE?
+objects = (object <WHITESPACE>)*
