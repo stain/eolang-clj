@@ -43,22 +43,22 @@ RIGHT_BRACKET = ')'
 STRING = <'"'> #"(\\\"|[^\"])*" <'"'>
 INT = #"-?[1-9]*[0-9]"
 (* TODO: Full IEEE FP spec including 10.32e-15 and -inf? *)
-FLOAT = #"-?[0-9]*(\\.[0-9]+)"
+FLOAT = #"-?[1-9]*[0-9](\\\\.[0-9]+)"
 
 
-import = <IMPORT> <WHITESPACE> JVMTYPE
+import = <IMPORT> <SPACE> JVMTYPE
 imports = (import <CR>)*
 
 extends = <EXTENDS> <WHITESPACE> TYPENAME (<COMMA> <WHITESPACE>? TYPENAME)*
 
 paramlist = TYPENAME <INDENT> OBJECTNAME (<COMMA> <WHITESPACE>? TYPENAME <INDENT> OBJECTNAME)*
 params = <LEFT_BRACKET> <WHITESPACE>? paramlist? <WHITESPACE>? <RIGHT_BRACKET>
-(* TODO: Is it allowed to have newlines after "(" ?*)
+(* TODO: Is it allowed to have newlines after "(" ? *)
 method = TYPENAME <INDENT> METHODNAME params
-methods = (method (<WHITESPACE> method)* )?
+methods = (method (<CR> method)*)?
 
-type = TYPE <WHITESPACE> TYPENAME (<WHITESPACE> extends)? <COLON> <WHITESPACE>? methods
-types = (type (<WHITESPACE> type)*)?
+type = TYPE <INDENT> TYPENAME (<WHITESPACE> extends)? <COLON> <CR> <WHITESPACE>? methods
+types = (type (<CR> type)*)?
 
 number = INT | FLOAT
 call = obj <DOT> METHODNAME <LEFT_BRACKET> args? <RIGHT_BRACKET>
