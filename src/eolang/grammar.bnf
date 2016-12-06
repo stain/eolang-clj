@@ -13,14 +13,20 @@ First rule MUST be 'program' as that is the default
 program = imports types objects WHITESPACE?
 
 
+(* TODO: Are all newline styles allowed? *)
+CR = '\r\n' | '\n\r' | '\n'
+SPACE = ' '
+(* TODO: Are both indent styles allowed? *)
+INDENT = #"[ \t]+"
 WHITESPACE = #"\s+"
 
+(* EO has strict restrictions for names *)
 ATTRIBUTENAME = #'@[a-z][a-z0-9]{2,15}'
 METHODNAME = #'[a-z][a-z0-9]{2,15}'
 OBJECTNAME = #'[a-z][a-z0-9]{2,15}'
 TYPENAME = #'[A-Z][A-Za-z0-9]{2,15}'
 
-(* TODO: This is a bit too permissive, only valid JVM types should work *)
+(* FIXME: This is a bit too permissive, but must allow any valid JVM type *)
 JVMTYPE = #'\S+'
 
 TYPE = 'type'
@@ -41,13 +47,14 @@ FLOAT = #"-?[0-9]*(\\.[0-9]+)"
 
 
 import = <IMPORT> <WHITESPACE> JVMTYPE
-imports = (import <WHITESPACE>)*
+imports = (import <CR>)*
 
 extends = <EXTENDS> <WHITESPACE> TYPENAME (<COMMA> <WHITESPACE>? TYPENAME)*
 
-paramlist = TYPENAME <WHITESPACE> OBJECTNAME (<COMMA> TYPENAME <WHITESPACE> OBJECTNAME)*
+paramlist = TYPENAME <INDENT> OBJECTNAME (<COMMA> <WHITESPACE>? TYPENAME <INDENT> OBJECTNAME)*
 params = <LEFT_BRACKET> <WHITESPACE>? paramlist? <WHITESPACE>? <RIGHT_BRACKET>
-method = TYPENAME <WHITESPACE> METHODNAME params
+(* TODO: Is it allowed to have newlines after "(" ?*)
+method = TYPENAME <INDENT> METHODNAME params
 methods = (method (<WHITESPACE> method)* )?
 
 type = TYPE <WHITESPACE> TYPENAME (<WHITESPACE> extends)? <COLON> <WHITESPACE>? methods
@@ -59,14 +66,14 @@ obj = ATTRIBUTENAME | OBJECTNAME | object | call
 arg = STRING | number | obj
 args = arg WHITESPACE? (<COMMA> <WHITESPACE>? arg)*
 objectcopy = OBJECTNAME <COLON> <WHITESPACE>? args?
-typenames = TYPENAME <WHITESPACE>? (<COMMA> <WHITESPACE> TYPENAME)*
+typenames = TYPENAME <WHITESPACE>? (<COMMA> <WHITESPACE>? TYPENAME)*
 attrib = TYPENAME <WHITESPACE> ATTRIBUTENAME
-attribs = (attrib <WHITESPACE>)*
+attribs = (attrib (<WHITESPACE> attrib)* )?
 
 methodimpl = method (<COLON> call)?
-methodimpls = (methodimpl <WHITESPACE>)*
+methodimpls = (methodimpl (<WHITESPACE> methodimpl)*)?
 objectcall = OBJECTNAME (<LEFT_BRACKET> args <RIGHT_BRACKET>)?
-objectdecl = <OBJECT> <WHITESPACE> objectcall <WHITESPACE> (<AS> <WHITESPACE> typenames <WHITESPACE>)? <COLON> attribs methodimpls
+objectdecl = <OBJECT> <WHITESPACE> objectcall (<WHITESPACE> <AS> <WHITESPACE> typenames)? <WHITESPACE>? <COLON> <WHITESPACE>? attribs <WHITESPACE>? methodimpls
 
 object = objectcopy | objectdecl
-objects = (object <WHITESPACE>)*
+objects = (object (<WHITESPACE> object)*)?
