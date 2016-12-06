@@ -38,5 +38,5 @@ which are © 2016 Yegor Bugayenko and
 `TODO`: [Clarify open source license of the eo spec](https://github.com/yegor256/eo/issues/64).
 
 Dependencies include [Clojure](http://clojure.org/) and
-[parse-ez](https://github.com/protoflex/parse-ez) which are distributed
+[instaparse](https://github.com/engelberg/instaparse) which are distributed
 under the [Eclipse Public License](www.eclipse.org/legal/epl-v10.html).

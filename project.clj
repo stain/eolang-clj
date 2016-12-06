@@ -5,7 +5,7 @@
             :url "https://opensource.org/licenses/MIT"}
   :dependencies [
     [org.clojure/clojure "1.8.0"]
-    [protoflex/parse-ez "0.4.2"]
+    [instaparse "1.4.3"]
   ]
   :main ^:skip-aot eolang.core
   :target-path "target/%s"
