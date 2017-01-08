@@ -10,7 +10,7 @@ First rule MUST be 'program' as that is the default
 
 
 
-program = imports types objects WHITESPACE?
+program = imports types objects <WHITESPACE>?
 
 
 (* TODO: Are all newline styles allowed? *)
