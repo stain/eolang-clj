@@ -10,15 +10,15 @@ First rule MUST be 'program' as that is the default
 
 
 
-program = imports types objects <WHITESPACE>?
+program = imports types objects WHITESPACE?
 
 
 (* TODO: Are all newline styles allowed? *)
 CR = '\r\n' | '\n\r' | '\n'
 SPACE = ' '
 (* TODO: Are both indent styles allowed? *)
-INDENT = #"[ \t]+"
-WHITESPACE = #"\s+"
+<INDENT> = #"[ \t]+"
+<WHITESPACE> = #"\s+"
 
 (* EO has strict restrictions for names *)
 ATTRIBUTENAME = #'@[a-z][a-z0-9]{2,15}'
@@ -32,48 +32,48 @@ JVMTYPE = #'\S+'
 TYPE = 'type'
 OBJECT = 'object'
 EXTENDS = 'extends'
-IMPORT = 'import'
+<IMPORT> = 'import'
 AS = 'as'
 CTOR = 'ctor'
-COMMA = ','
+<COMMA> = ','
 COLON = ':'
-DOT = '.'
-LEFT_BRACKET = '('
-RIGHT_BRACKET = ')'
+<DOT> = '.'
+<LEFT_BRACKET> = '('
+<RIGHT_BRACKET> = ')'
 STRING = <'"'> #"(\\\"|[^\"])*" <'"'>
 INT = #"-?[1-9]*[0-9]"
 (* TODO: Full IEEE FP spec including 10.32e-15 and -inf? *)
 FLOAT = #"-?[1-9]*[0-9](\\\\.[0-9]+)"
 
 
-import = <IMPORT> <SPACE> JVMTYPE
+import = IMPORT <SPACE> JVMTYPE
 imports = (import <CR>)*
 
-extends = <EXTENDS> <WHITESPACE> TYPENAME (<COMMA> <WHITESPACE>? TYPENAME)*
+extends = <EXTENDS> WHITESPACE TYPENAME (COMMA WHITESPACE? TYPENAME)*
 
-paramlist = TYPENAME <INDENT> OBJECTNAME (<COMMA> <WHITESPACE>? TYPENAME <INDENT> OBJECTNAME)*
-params = <LEFT_BRACKET> <WHITESPACE>? paramlist? <WHITESPACE>? <RIGHT_BRACKET>
+paramlist = TYPENAME INDENT OBJECTNAME (COMMA WHITESPACE? TYPENAME INDENT OBJECTNAME)*
+params = LEFT_BRACKET WHITESPACE? paramlist? WHITESPACE? RIGHT_BRACKET
 (* TODO: Is it allowed to have newlines after "(" ? *)
-method = TYPENAME <INDENT> METHODNAME params
+method = TYPENAME INDENT METHODNAME params
 methods = (method (<CR> method)*)?
 
-type = TYPE <INDENT> TYPENAME (<WHITESPACE> extends)? <COLON> <CR> <WHITESPACE>? methods
+type = TYPE INDENT TYPENAME (WHITESPACE extends)? <COLON> <CR> WHITESPACE? methods
 types = (type (<CR> type)*)?
 
 number = INT | FLOAT
-call = obj <DOT> METHODNAME <LEFT_BRACKET> args? <RIGHT_BRACKET>
+call = obj DOT METHODNAME LEFT_BRACKET args? RIGHT_BRACKET
 obj = ATTRIBUTENAME | OBJECTNAME | object | call
 arg = STRING | number | obj
-args = arg WHITESPACE? (<COMMA> <WHITESPACE>? arg)*
-objectcopy = OBJECTNAME <COLON> <WHITESPACE>? args?
-typenames = TYPENAME <WHITESPACE>? (<COMMA> <WHITESPACE>? TYPENAME)*
-attrib = TYPENAME <WHITESPACE> ATTRIBUTENAME
-attribs = (attrib (<WHITESPACE> attrib)* )?
+args = arg WHITESPACE? (COMMA WHITESPACE? arg)*
+objectcopy = OBJECTNAME <COLON> WHITESPACE? args?
+typenames = TYPENAME WHITESPACE? (COMMA WHITESPACE? TYPENAME)*
+attrib = TYPENAME WHITESPACE ATTRIBUTENAME
+attribs = (attrib (WHITESPACE attrib)* )?
 
 methodimpl = method (<COLON> call)?
-methodimpls = (methodimpl (<WHITESPACE> methodimpl)*)?
-objectcall = OBJECTNAME (<LEFT_BRACKET> args <RIGHT_BRACKET>)?
-objectdecl = <OBJECT> <WHITESPACE> objectcall (<WHITESPACE> <AS> <WHITESPACE> typenames)? <WHITESPACE>? <COLON> <WHITESPACE>? attribs <WHITESPACE>? methodimpls
+methodimpls = (methodimpl (WHITESPACE methodimpl)*)?
+objectcall = OBJECTNAME (LEFT_BRACKET args RIGHT_BRACKET)?
+objectdecl = <OBJECT> WHITESPACE objectcall (WHITESPACE <AS> WHITESPACE typenames)? WHITESPACE? <COLON> WHITESPACE? attribs WHITESPACE? methodimpls
 
 object = objectcopy | objectdecl
-objects = (object (<WHITESPACE> object)*)?
+objects = (object (WHITESPACE object)*)?
