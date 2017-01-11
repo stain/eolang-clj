@@ -4,14 +4,10 @@ Must be compatible with https://github.com/engelberg/instaparse
 See also eo-compiler's grammar
 https://github.com/yegor256/eo/blob/master/eo-compiler/src/main/antlr4/org/eolang/compiler/Program.g4
 
-First rule MUST be 'program' as that is the default
-
 *)
 
-
-
+(* First rule is the default rule, which MUST be 'program' *)
 program = imports types objects WHITESPACE?
-
 
 (* TODO: Are all newline styles allowed? *)
 CR = '\r\n' | '\n\r' | '\n'
