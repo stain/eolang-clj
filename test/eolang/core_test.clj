@@ -88,11 +88,3 @@
       "Object Thinking")
   )
 )
-
-
-; Object Copyright
-
-(deftest a-test
-  (testing "FIXME, I fail."
-    (println helloworld)
-    (is (= 0 1))))
