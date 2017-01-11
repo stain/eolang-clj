@@ -14,7 +14,13 @@ CR = '\r\n' | '\n\r' | '\n'
 SPACE = ' '
 (* TODO: Are both indent styles allowed? *)
 <INDENT> = #"[ \t]+"
-<WHITESPACE> = #"\s+"
+<STRICT_WHITESPACE> = #"\s+"
+
+(* Inserted by pre-processing in parser.clj
+  after unindent
+*)
+<ENDBLOCK> = ';'
+<WHITESPACE> = STRICT_WHITESPACE | ENDBLOCK
 
 (* EO has strict restrictions for names *)
 ATTRIBUTENAME = #'@[a-z][a-z0-9]{2,15}'
@@ -61,15 +67,17 @@ call = obj DOT METHODNAME LEFT_BRACKET args? RIGHT_BRACKET
 obj = ATTRIBUTENAME | OBJECTNAME | object | call
 arg = STRING | number | obj
 args = arg WHITESPACE? (COMMA WHITESPACE? arg)*
-objectcopy = OBJECTNAME <COLON> WHITESPACE? args?
+objectcopyargs = arg STRICT_WHITESPACE? (COMMA WHITESPACE? arg)*
+objectcopy = OBJECTNAME <COLON> STRICT_WHITESPACE? objectcopyargs?
 typenames = TYPENAME WHITESPACE? (COMMA WHITESPACE? TYPENAME)*
 attrib = TYPENAME WHITESPACE ATTRIBUTENAME
-attribs = (attrib (WHITESPACE attrib)* )?
+attribs = (attrib (STRICT_WHITESPACE attrib)* )?
 
+(* TODO: Can there be many calls in the method? *)
 methodimpl = method (<COLON> call)?
-methodimpls = (methodimpl (WHITESPACE methodimpl)*)?
+methodimpls = (methodimpl (STRICT_WHITESPACE methodimpl)*)?
 objectcall = OBJECTNAME (LEFT_BRACKET args RIGHT_BRACKET)?
-objectdecl = <OBJECT> WHITESPACE objectcall (WHITESPACE <AS> WHITESPACE typenames)? WHITESPACE? <COLON> WHITESPACE? attribs WHITESPACE? methodimpls
+objectdecl = <OBJECT> WHITESPACE objectcall (WHITESPACE <AS> WHITESPACE typenames)? WHITESPACE? <COLON> STRICT_WHITESPACE? attribs STRICT_WHITESPACE? methodimpls ENDBLOCK
 
 object = objectcopy | objectdecl
-objects = (object (WHITESPACE object)*)?
+objects = (object (STRICT_WHITESPACE object)*)? ENDBLOCK?
