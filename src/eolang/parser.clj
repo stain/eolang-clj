@@ -9,6 +9,16 @@
 ; Block termiantor after processing
 (def ENDBLOCK ";")
 
+(defn optional-newline [lines]
+    (if (not (empty? lines)) NEWLINE))
+
+(defn terminating-newline [lines]
+  (if (or
+        (empty? lines)
+        (not (= \newline (last (last lines)))))
+    (concat lines ["\n"])
+    lines))
+
 (defn terminate-blocks [eo-src]
     (str/join
       (loop [processed-lines [] ; finished lines in order
@@ -19,10 +29,10 @@
              ; stack of indent strings
              indents '()]
         (if (empty? lines) ; finished
-          (concat processed-lines
+          (terminating-newline (concat processed-lines
             ; let's just add those trailing ;
             ; for each remaining unindent
-            (map #(str % ENDBLOCK NEWLINE) indents))
+            (map #(str % ENDBLOCK NEWLINE) indents)))
           (let ; process current line
             [line (first lines)
              prev-indent (or (peek indents) "")
@@ -30,14 +40,14 @@
              (cond
                (= prev-indent curr-indent)
                 ; same indentation, do next line
-                  (recur (conj processed-lines (str NEWLINE line))
+                  (recur (conj processed-lines (str (optional-newline processed-lines) line))
                          (rest lines)
                          (inc line#)
                          last-indent#
                          indents)
                (str/starts-with? curr-indent prev-indent)
                 ; increased indentation level
-                  (recur (conj processed-lines (str NEWLINE line))
+                  (recur (conj processed-lines (str (optional-newline processed-lines) line))
                          (rest lines)
                          (inc line#)
                          ; Current line is now last indentation increase
@@ -50,7 +60,8 @@
                 ; (it might need multiple unindents)
                 (recur (conj processed-lines
                           ; For debugging we'll re-use the last indentation
-                          (str (peek indents) ENDBLOCK))
+                          ;(str NEWLINE (peek indents) ENDBLOCK))
+                          ENDBLOCK)
                        ; no change of lines
                        lines
                        line#
