@@ -32,7 +32,8 @@
           (terminating-newline (concat processed-lines
             ; let's just add those trailing ;
             ; for each remaining unindent
-            (map #(str % ENDBLOCK NEWLINE) indents)))
+            ; (without including the actual indent)
+            (map (fn [indent] ENDBLOCK) indents)))
           (let ; process current line
             [line (first lines)
              prev-indent (or (peek indents) "")
