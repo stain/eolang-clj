@@ -84,7 +84,7 @@
                                 (nth processed-lines last-indent#)))))))))))))))
 
 (def grammar
- (insta/parser (clojure.java.io/resource "eolang/grammar.bnf")))
+ (insta/parser (clojure.java.io/resource "eolang/grammar.ebnf")))
 
 (defn parse [eo-src]
  (grammar (terminate-blocks eo-src)))
