@@ -16,7 +16,7 @@
 ; The next step would then be to group structures logically,
 ; e.g the flattened
 ; (type Car extends Vehicle Money cost () Car moveTo (Coordinates coords))
-; becomes more Clojuer-like
+; becomes more Clojure-like
 ; (type 'Car (:extends [Vehicle]
 ;     { :cost [Money]
 ;        :picture [Bytes]

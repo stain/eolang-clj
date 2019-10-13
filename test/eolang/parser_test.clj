@@ -15,4 +15,10 @@
     (is (= "0\n 1\n 1;\n" (terminate-blocks "0\n 1\n 1")))
     (is (= "0\n 1\n   2;\n 1;\n0\n" (terminate-blocks "0\n 1\n   2\n 1\n0")))
     (is (= "0\n 1\n   2;\n 1;\n" (terminate-blocks "0\n 1\n   2\n 1")))
-))
+)
+  (testing "parsing-hello"
+    (let [src (slurp "test/eolang/hello.eo")
+          parsed (parse src)]
+      (println parsed)
+  ))
+)
